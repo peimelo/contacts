@@ -22,9 +22,9 @@ class ListContacts extends Component {
   }
 
   render() {
-    const { contacts, onDeleteContact } = this.props
+    const { contacts, onDeleteContact, onNavigate } = this.props
     const { query } = this.state
-    
+
     let showingContacts
     if (query) {
       const match = new RegExp(escapeRegExp(query), 'i')
@@ -32,9 +32,9 @@ class ListContacts extends Component {
     } else {
       showingContacts = contacts
     }
-    
+
     showingContacts.sort(sortBy('name'))
-    
+
     return (
       <div className='list-contacts'>
         <div className='list-contacts-top'>
@@ -42,9 +42,14 @@ class ListContacts extends Component {
             className='search-contacts'
             type='text'
             placeholder='Search contacts'
-            value={this.state.query}
+            value={query}
             onChange={(event) => this.updateQuery(event.target.value)}
           />
+          <a
+            href="#create"
+            onClick={onNavigate}
+            className="add-contact"
+          >Add Contact</a>
         </div>
 
         {showingContacts.length !== contacts.length && (
@@ -52,7 +57,7 @@ class ListContacts extends Component {
             <span>Now showing {showingContacts.length} of {contacts.length} total</span>
             <button onClick={this.clearQuery}>Show</button>
           </div>
-        )}        
+        )}
 
         <ol className='contact-list'>
           {showingContacts.map((contact) => (
